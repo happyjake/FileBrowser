@@ -49,9 +49,10 @@ class FileListViewController: UIViewController {
         searchController.delegate = self
         
         // Add dismiss button
-        let dismissButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(FileListViewController.dismiss(button:)))
-        self.navigationItem.rightBarButtonItem = dismissButton
-        
+        self.navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(FileListViewController.dismiss(button:))),
+            UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(FileListViewController.share(button:))),
+        ]
     }
     
     deinit{
@@ -91,6 +92,15 @@ class FileListViewController: UIViewController {
     
     @objc func dismiss(button: UIBarButtonItem = UIBarButtonItem()) {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func share(button: UIBarButtonItem = UIBarButtonItem()) {
+        let activityViewController = UIActivityViewController(activityItems: [self.initialPath], applicationActivities: nil)
+        self.present(activityViewController, animated: true, completion: nil)
+        if let pop = activityViewController.popoverPresentationController,let v = button as? UIView {
+            pop.sourceView = v
+            pop.sourceRect = v.bounds
+        }
     }
     
     //MARK: Data
