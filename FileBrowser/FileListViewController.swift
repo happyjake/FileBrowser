@@ -95,7 +95,10 @@ class FileListViewController: UIViewController {
     }
     
     @objc func share(button: UIBarButtonItem = UIBarButtonItem()) {
-        let activityViewController = UIActivityViewController(activityItems: [self.initialPath], applicationActivities: nil)
+        guard let path = self.initialPath else {
+            return
+        }
+        let activityViewController = UIActivityViewController(activityItems: [path], applicationActivities: nil)
         self.present(activityViewController, animated: true, completion: nil)
         if let pop = activityViewController.popoverPresentationController,let v = self.view {
             pop.sourceView = v
